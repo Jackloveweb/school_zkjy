@@ -21,82 +21,154 @@ html,body{
     background:#000;
 }
 
-/* 海报容器 */
+/* 背景海报 */
 .poster{
-
     position:relative;
-
     width:100vw;
     height:100vh;
 
     background:url("bg.png")
-               center center
-               no-repeat;
+              center center
+              no-repeat;
 
     background-size:cover;
 }
 
-/* 黄色框中的倒计时 */
+/* 倒计时区域 */
 .countdown{
 
     position:absolute;
 
-    /* 根据当前海报比例定位 */
-    left:29%;
-    top:74%;
+    left:50%;
+    top:80%;
 
-    width:42%;
-    height:8%;
+    transform:translate(-50%,-50%);
+
+    width:30%;
 
     display:flex;
-    justify-content:center;
+    justify-content:space-between;
     align-items:center;
-
-    font-family:
-        "Microsoft YaHei",
-        "PingFang SC",
-        sans-serif;
-
-    font-weight:900;
-
-    color:#8b0000;
-
-    text-align:center;
-
-    white-space:nowrap;
-
-    text-shadow:
-        0 1px 1px rgba(255,255,255,.35);
-
-    font-size:clamp(32px,3vw,68px);
-
-    letter-spacing:2px;
 }
 
-/* 手机端优化 */
+/* 卡片 */
+.time-card{
+
+    width:90px;
+    height:98px;
+
+    background:#2f3136;
+
+    border-radius:8px;
+
+    box-shadow:
+        0 6px 15px rgba(0,0,0,.35);
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+/* 数字 */
+.num{
+
+    color:#fff;
+
+    font-size:56px;
+    font-weight:700;
+
+    line-height:1;
+}
+
+/* 天时分秒 */
+.label{
+
+    color:#fff;
+
+    font-size:24px;
+
+    margin-top:8px;
+}
+
+/* 平板 */
+@media (max-width:1024px){
+
+    .countdown{
+        width:50%;
+    }
+
+    .time-card{
+        width:75px;
+        height:90px;
+    }
+
+    .num{
+        font-size:46px;
+    }
+
+    .label{
+        font-size:18px;
+    }
+}
+
+/* 手机 */
 @media (max-width:768px){
 
     .countdown{
 
-        left:23%;
-        width:54%;
+        width:70%;
 
-        top:74%;
+        top:80%;
+    }
 
-        font-size:clamp(18px,4vw,36px);
+    .time-card{
 
-        letter-spacing:1px;
+        width:52px;
+        height:64px;
+    }
+
+    .num{
+
+        font-size:28px;
+    }
+
+    .label{
+
+        font-size:12px;
+        margin-top:3px;
     }
 }
 
 </style>
 </head>
+
 <body>
 
 <div class="poster">
 
-    <div class="countdown" id="timer">
-        365天 00时 00分 00秒
+    <div class="countdown">
+
+        <div class="time-card">
+            <div class="num" id="days">365</div>
+            <div class="label">天</div>
+        </div>
+
+        <div class="time-card">
+            <div class="num" id="hours">00</div>
+            <div class="label">时</div>
+        </div>
+
+        <div class="time-card">
+            <div class="num" id="minutes">00</div>
+            <div class="label">分</div>
+        </div>
+
+        <div class="time-card">
+            <div class="num" id="seconds">00</div>
+            <div class="label">秒</div>
+        </div>
+
     </div>
 
 </div>
@@ -104,12 +176,11 @@ html,body{
 <script>
 
 /*
- * 修改这里即可
- * 根据当地中考时间调整
- */
-const targetDate = new Date(
-    "2026-06-17 08:30:00"
-);
+ 修改这里即可
+ 江西2026中考时间
+*/
+const targetDate =
+new Date("2026-06-17 08:30:00");
 
 function updateCountdown(){
 
@@ -119,33 +190,44 @@ function updateCountdown(){
 
     if(diff <= 0){
 
-        document.getElementById("timer").innerHTML =
-        "考试开始";
+        document.querySelector(".countdown").innerHTML =
+        '<div style="color:white;font-size:48px;font-weight:bold;">考试开始</div>';
 
         return;
     }
 
-    const days = Math.floor(
-        diff / (1000 * 60 * 60 * 24)
-    );
+    const days =
+        Math.floor(diff/(1000*60*60*24));
 
-    const hours = Math.floor(
-        (diff % (1000 * 60 * 60 * 24))
-        / (1000 * 60 * 60)
-    );
+    const hours =
+        Math.floor(
+            diff%(1000*60*60*24)
+            /(1000*60*60)
+        );
 
-    const minutes = Math.floor(
-        (diff % (1000 * 60 * 60))
-        / (1000 * 60)
-    );
+    const minutes =
+        Math.floor(
+            diff%(1000*60*60)
+            /(1000*60)
+        );
 
-    const seconds = Math.floor(
-        (diff % (1000 * 60))
-        / 1000
-    );
+    const seconds =
+        Math.floor(
+            diff%(1000*60)
+            /1000
+        );
 
-    document.getElementById("timer").innerHTML =
-        `${days}天 ${String(hours).padStart(2,'0')}时 ${String(minutes).padStart(2,'0')}分 ${String(seconds).padStart(2,'0')}秒`;
+    document.getElementById("days").innerText =
+        String(days).padStart(2,'0');
+
+    document.getElementById("hours").innerText =
+        String(hours).padStart(2,'0');
+
+    document.getElementById("minutes").innerText =
+        String(minutes).padStart(2,'0');
+
+    document.getElementById("seconds").innerText =
+        String(seconds).padStart(2,'0');
 }
 
 updateCountdown();
