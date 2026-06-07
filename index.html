@@ -1,132 +1,158 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中考倒计时海报（适配版）</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            width: 100vw;
-            height: 100vh;
-            /* 背景图铺满电脑端，保持比例不变形 */
-            background: url('bg.jpg') center center / cover no-repeat;
-            background-color: #f5f5f5;
-            overflow: hidden;
-            position: relative;
-        }
-        /* 倒计时容器：精准定位到浅黄色框区域 */
-        .countdown-container {
-            position: absolute;
-            /* 核心调整：匹配海报里浅黄色框的位置和尺寸 */
-            top: 85%;    /* 垂直居中到浅黄色框 */
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85%;  /* 宽度占满浅黄色框 */
-            height: 70%; /* 高度填充浅黄色框 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        /* 倒计时数字方块容器：横向铺满，间距适配 */
-        .countdown-box {
-            display: flex;
-            gap: 3vw; /* 自适应间距，适配宽屏 */
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-        /* 单个数字方块：放大尺寸，填充黄色框 */
-        .countdown-item {
-            width: 12vw;  /* 宽屏适配的方块宽度 */
-            height: 15vw; /* 高度匹配黄色框 */
-            max-width: 180px;
-            max-height: 220px;
-            background-color: #333333;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 8vw;   /* 大号数字，填充方块 */
-            max-font-size: 120px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: "Arial", sans-serif;
-            /* 加阴影更贴合海报风格 */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        /* 方块下方的小字（天/时/分/秒） */
-        .countdown-label {
-        font-size: 2vw;
-        max-font-size: 24px;
-        color: #ffffff;
-        position: relative; /* 开启定位 */
-        top: -8px; /* 往上移8px，数值越大移越多，比如-12px */
-        font-weight: normal;
-        margin-top: 0; /* 清空原有边距，避免冲突 */
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>2026决战中考倒计时</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+}
+
+/* 海报容器 */
+.poster{
+
+    position:relative;
+
+    width:100vw;
+    height:100vh;
+
+    background:url("bg.png")
+               center center
+               no-repeat;
+
+    background-size:cover;
+}
+
+/* 黄色框中的倒计时 */
+.countdown{
+
+    position:absolute;
+
+    /* 根据当前海报比例定位 */
+    left:29%;
+    top:75%;
+
+    width:42%;
+    height:8%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:
+        "Microsoft YaHei",
+        "PingFang SC",
+        sans-serif;
+
+    font-weight:900;
+
+    color:#8b0000;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+    text-shadow:
+        0 1px 1px rgba(255,255,255,.35);
+
+    font-size:clamp(32px,3vw,68px);
+
+    letter-spacing:2px;
+}
+
+/* 手机端优化 */
+@media (max-width:768px){
+
+    .countdown{
+
+        left:23%;
+        width:54%;
+
+        top:75%;
+
+        font-size:clamp(18px,4vw,36px);
+
+        letter-spacing:1px;
+    }
+}
+
+</style>
 </head>
 <body>
-    <div class="countdown-container">
-        <div class="countdown-box">
-            <div class="countdown-item">
-                <span id="days">13</span>
-                <span class="countdown-label">天</span>
-            </div>
-            <div class="countdown-item">
-                <span id="hours">09</span>
-                <span class="countdown-label">时</span>
-            </div>
-            <div class="countdown-item">
-                <span id="minutes">00</span>
-                <span class="countdown-label">分</span>
-            </div>
-            <div class="countdown-item">
-                <span id="seconds">25</span>
-                <span class="countdown-label">秒</span>
-            </div>
-        </div>
+
+<div class="poster">
+
+    <div class="countdown" id="timer">
+        365天 00时 00分 00秒
     </div>
 
-    <script>
-        // 请修改为实际中考时间！！！
-        const examDate = new Date('2026-06-17T08:30:00').getTime();
+</div>
 
-        // 实时更新倒计时
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const diff = examDate - now;
+<script>
 
-            if (diff <= 0) {
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-                return;
-            }
+/*
+ * 修改这里即可
+ * 根据当地中考时间调整
+ */
+const targetDate = new Date(
+    "2026-06-17 08:30:00"
+);
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+function updateCountdown(){
 
-            // 补零保持两位数字
-            document.getElementById('days').textContent = String(days).padStart(2, '0');
-            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-        }
+    const now = new Date();
 
-        // 初始化+每秒更新
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    </script>
+    const diff = targetDate - now;
+
+    if(diff <= 0){
+
+        document.getElementById("timer").innerHTML =
+        "考试开始";
+
+        return;
+    }
+
+    const days = Math.floor(
+        diff / (1000 * 60 * 60 * 24)
+    );
+
+    const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24))
+        / (1000 * 60 * 60)
+    );
+
+    const minutes = Math.floor(
+        (diff % (1000 * 60 * 60))
+        / (1000 * 60)
+    );
+
+    const seconds = Math.floor(
+        (diff % (1000 * 60))
+        / 1000
+    );
+
+    document.getElementById("timer").innerHTML =
+        `${days}天 ${String(hours).padStart(2,'0')}时 ${String(minutes).padStart(2,'0')}分 ${String(seconds).padStart(2,'0')}秒`;
+}
+
+updateCountdown();
+
+setInterval(updateCountdown,1000);
+
+</script>
+
 </body>
 </html>
